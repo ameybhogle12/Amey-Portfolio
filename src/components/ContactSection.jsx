@@ -43,13 +43,32 @@ export const ContactSection = () => {
     };
 
     const handleSubmit = (event) => {
+        event.preventDefault();
+        
         if (!validate()) {
-            event.preventDefault();
             return;
         }
 
-        setFormErrors({});
-        toast.success("Your message is ready to send! Thank you.");
+        const encode = (data) => {
+            return Object.keys(data)
+                .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+                .join("&");
+        };
+
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode({ "form-name": "contact", ...formData })
+        })
+        .then(() => {
+            setFormErrors({});
+            setFormData({ name: "", email: "", message: "" });
+            toast.success("Message sent successfully! Thank you.");
+        })
+        .catch((error) => {
+            console.error(error);
+            toast.error("Oops! Something went wrong.");
+        });
     };
 
     return (
