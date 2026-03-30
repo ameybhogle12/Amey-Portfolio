@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export const ContactSection = () => {
     const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -64,7 +65,13 @@ export const ContactSection = () => {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div className="space-y-8">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                        className="space-y-8"
+                    >
                         <h3 className="text-2xl font-semibold mb-6">
                             {" "}
                             Contact Information
@@ -123,9 +130,13 @@ export const ContactSection = () => {
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
                         className="bg-card p-8 rounded-lg shadow-xs"
                     >
                         <h3 className="text-2xl font-semibold mb-6"> Send a Message</h3>
@@ -207,7 +218,7 @@ export const ContactSection = () => {
                                 <Send size={16} />
                             </button>
                         </form>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

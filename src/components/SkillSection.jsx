@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const skills = [
   // Frontend
@@ -58,8 +59,12 @@ export const SkillsSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSkills.map((skill, key) => (
-            <div
+            <motion.div
               key={key}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: key * 0.1 }}
               className="bg-card p-6 rounded-lg shadow-xs card-hover"
             >
               <div className="text-left mb-4">
@@ -77,7 +82,7 @@ export const SkillsSection = () => {
                   {skill.level}%
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

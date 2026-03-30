@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export const WorkExperienceSection = () => {
   const workExperience = [
     {
@@ -24,8 +26,12 @@ export const WorkExperienceSection = () => {
 
         <div className="space-y-6">
           {workExperience.map((item, index) => (
-            <article
+            <motion.article
               key={`${item.company}-${index}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
               className="p-6 rounded-2xl border border-border bg-card/70 backdrop-blur-md shadow-md text-left"
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 text-left">
@@ -43,7 +49,7 @@ export const WorkExperienceSection = () => {
                   <li key={point}>{point}</li>
                 ))}
               </ul>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
