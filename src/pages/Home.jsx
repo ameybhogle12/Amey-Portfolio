@@ -5,23 +5,22 @@ import { Navbar } from "../components/Navbar";
 import { ProjectsSection } from "../components/ProjectSection";
 import { SkillsSection } from "../components/SkillSection";
 import { StarBackground } from "../components/StarBackground";
-import { ThemeToggle } from "../components/ThemeToggle";
+import { WorkExperienceSection } from "../components/WorkExperienceSection";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Home = () => {
     return (
         <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
             <Toaster />
-            
-            <ThemeToggle/>
 
             <StarBackground/>
-
             <Navbar/>
 
             <HeroSection/>
 
             <AboutSection/>
+
+            <WorkExperienceSection />
 
             <SkillsSection/>
 

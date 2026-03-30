@@ -13,8 +13,46 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 export const ContactSection = () => {
+    const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+    const [formErrors, setFormErrors] = useState({});
+
+    const validate = () => {
+        const errors = {};
+
+        if (!formData.name.trim()) {
+            errors.name = "Name is required";
+        }
+
+        if (!formData.email.trim()) {
+            errors.email = "Email is required";
+        } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/i.test(formData.email.trim())) {
+            errors.email = "Please enter a valid email address";
+        }
+
+        if (!formData.message.trim()) {
+            errors.message = "Message is required";
+        }
+
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const handleChange = (field) => (event) => {
+        setFormData((prev) => ({ ...prev, [field]: event.target.value }));
+    };
+
+    const handleSubmit = (event) => {
+        if (!validate()) {
+            event.preventDefault();
+            return;
+        }
+
+        setFormErrors({});
+        toast.success("Your message is ready to send! Thank you.");
+    };
+
     return (
-        <section id="contact" className="py-24 px-4 relative bg-secondary/30">
+        <section id="contact" className="py-24 px-4 relative bg-background/45 dark:bg-background/20">
             <div className="container mx-auto max-w-5xl">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
                     Get In <span className="text-primary"> Touch</span>
@@ -92,7 +130,7 @@ export const ContactSection = () => {
                     >
                         <h3 className="text-2xl font-semibold mb-6"> Send a Message</h3>
 
-                        <form className="space-y-6" name="contact" method="POST" data-netlify="true">
+                        <form className="space-y-6" name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit}>
                             <input type="hidden" name="form-name" value="contact" />
                             <div>
                                 <label
@@ -106,10 +144,14 @@ export const ContactSection = () => {
                                     type="text"
                                     id="name"
                                     name="name"
-                                    required
+                                    value={formData.name}
+                                    onChange={handleChange("name")}
                                     className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Pedro Machado..."
                                 />
+                                {formErrors.name && (
+                                    <p className="text-sm text-destructive mt-1">{formErrors.name}</p>
+                                )}
                             </div>
 
                             <div>
@@ -124,10 +166,14 @@ export const ContactSection = () => {
                                     type="email"
                                     id="email"
                                     name="email"
-                                    required
+                                    value={formData.email}
+                                    onChange={handleChange("email")}
                                     className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="john@gmail.com"
                                 />
+                                {formErrors.email && (
+                                    <p className="text-sm text-destructive mt-1">{formErrors.email}</p>
+                                )}
                             </div>
 
                             <div>
@@ -141,10 +187,14 @@ export const ContactSection = () => {
                                 <textarea
                                     id="message"
                                     name="message"
-                                    required
+                                    value={formData.message}
+                                    onChange={handleChange("message")}
                                     className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                                     placeholder="Hello, I'd like to talk about..."
                                 />
+                                {formErrors.message && (
+                                    <p className="text-sm text-destructive mt-1">{formErrors.message}</p>
+                                )}
                             </div>
 
                             <button

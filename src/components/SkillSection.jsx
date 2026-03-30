@@ -3,10 +3,9 @@ import { cn } from "@/lib/utils";
 
 const skills = [
   // Frontend
-  { name: "HTML/CSS", level: 95, category: "frontend" },
-  { name: "JavaScript", level: 70, category: "frontend" },
-  { name: "React", level: 70, category: "frontend" },
-  { name: "Kotlin", level: 75, category: "frontend" },
+  { name: "HTML/CSS", level: 80, category: "frontend" },
+  { name: "JavaScript", level: 60, category: "frontend" },
+  { name: "React", level: 60, category: "frontend" },
   { name: "Dart", level: 15, category: "frontend" },
 
   // Backend
@@ -17,7 +16,7 @@ const skills = [
   { name: "SQL", level: 10, category: "backend" },
 
   // Tools
-  { name: "Git/GitHub", level: 70, category: "tools" },
+  { name: "Git/GitHub", level: 60, category: "tools" },
   { name: "Figma", level: 85, category: "tools" },
   { name: "VS Code", level: 95, category: "tools" },
   { name: "Unity", level: 25, category: "tools" },
@@ -34,7 +33,7 @@ export const SkillsSection = () => {
     (skill) => activeCategory === "all" || skill.category === activeCategory
   );
   return (
-    <section id="skills" className="py-24 px-4 relative bg-secondary/30">
+    <section id="skills" className="py-24 px-4 relative bg-background/45 dark:bg-background/20">
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
           My <span className="text-primary"> Skills</span>
