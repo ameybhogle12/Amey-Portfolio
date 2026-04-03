@@ -8,8 +8,8 @@ const projects = [
         description: "An Android application that uses machine learning to provide crop-related insights through a clean and modern user interface.",
         image: "/projects/Agricare.png",
         tags: ["Kotlin", "Python", "Jetpack Compose"],
-        demoUrl: "#",
-        githubUrl: "#",
+        demoUrl: "https://github.com/ameybhogle12/AgriCare.git",
+        githubUrl: "https://github.com/ameybhogle12/AgriCare.git",
     },
     {
         id: 2,
@@ -28,8 +28,8 @@ const projects = [
             "A classic Android Tetris game built from scratch, focusing on core game mechanics, collision logic, and scoring.",
         image: "/projects/Tetris.png",
         tags: ["Java", "Android Studio", "XML"],
-        demoUrl: "#",
-        githubUrl: "#",
+        demoUrl: "https://github.com/ameybhogle12/Tetris.git",
+        githubUrl: "https://github.com/ameybhogle12/Tetris.git",
     },
     {
         id: 4,
@@ -38,8 +38,8 @@ const projects = [
             "A dynamic Java-based web application that displays real-time weather data using JSP and API integration.",
         image: "/projects/Weather.png",
         tags: ["Java", "JSP", "HTML/CSS"],
-        demoUrl: "#",
-        githubUrl: "#",
+        demoUrl: "https://github.com/ameybhogle12/Weather-Website.git",
+        githubUrl: "https://github.com/ameybhogle12/Weather-Website.git",
     },
     {
         id: 5,
@@ -48,8 +48,8 @@ const projects = [
             "An Android quiz application featuring interactive questions, score tracking, and smooth user navigation.",
         image: "/projects/QuizApp.png",
         tags: ["Kotlin", "XML", "Android Studio"],
-        demoUrl: "#",
-        githubUrl: "#",
+        demoUrl: "https://github.com/ameybhogle12/QuizApp.git",
+        githubUrl: "https://github.com/ameybhogle12/QuizApp.git",
     },
     {
         id: 6,
