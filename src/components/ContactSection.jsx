@@ -44,7 +44,7 @@ export const ContactSection = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
+
         if (!validate()) {
             return;
         }
@@ -60,15 +60,15 @@ export const ContactSection = () => {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({ "form-name": "contact", ...formData })
         })
-        .then(() => {
-            setFormErrors({});
-            setFormData({ name: "", email: "", message: "" });
-            toast.success("Message sent successfully! Thank you.");
-        })
-        .catch((error) => {
-            console.error(error);
-            toast.error("Oops! Something went wrong.");
-        });
+            .then(() => {
+                setFormErrors({});
+                setFormData({ name: "", email: "", message: "" });
+                toast.success("Message sent successfully! Thank you.");
+            })
+            .catch((error) => {
+                console.error(error);
+                toast.error("Oops! Something went wrong.");
+            });
     };
 
     return (
@@ -84,7 +84,7 @@ export const ContactSection = () => {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -177,7 +177,7 @@ export const ContactSection = () => {
                                     value={formData.name}
                                     onChange={handleChange("name")}
                                     className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder="Pedro Machado..."
+                                    placeholder="Amey Bhogle"
                                 />
                                 {formErrors.name && (
                                     <p className="text-sm text-destructive mt-1">{formErrors.name}</p>
@@ -199,7 +199,7 @@ export const ContactSection = () => {
                                     value={formData.email}
                                     onChange={handleChange("email")}
                                     className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder="john@gmail.com"
+                                    placeholder="example@gmail.com"
                                 />
                                 {formErrors.email && (
                                     <p className="text-sm text-destructive mt-1">{formErrors.email}</p>
