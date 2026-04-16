@@ -1,22 +1,57 @@
+import { useEffect, useRef } from "react";
 import { Code, Gamepad2, Palette } from "lucide-react";
-import { motion } from "framer-motion";
+import { animate } from "animejs";
 
 export const AboutSection = () => {
+    const sectionRef = useRef(null);
+    const leftContentRef = useRef(null);
+    const rightContentRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    // Animate left content
+                    animate(leftContentRef.current, {
+                        opacity: [0, 1],
+                        translateX: [-30, 0],
+                        duration: 1000,
+                        ease: "outQuart"
+                    });
+
+                    // Animate right cards with stagger
+                    animate(".about-card", {
+                        opacity: [0, 1],
+                        translateX: [30, 0],
+                        duration: 800,
+                        delay: (el, i) => i * 200 + 200,
+                        ease: "outQuart"
+                    });
+
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <section id="about" className="py-24 px-4 relative">
-            {" "}
+        <section id="about" ref={sectionRef} className="py-24 px-4 relative">
             <div className="container mx-auto max-w-5xl">
                 <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
                     About <span className="text-primary"> Me</span>
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <motion.div 
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className="space-y-6"
+                    <div 
+                        ref={leftContentRef}
+                        className="space-y-6 opacity-0"
                     >
                         <h3 className="text-2xl font-semibold">
                             Software Developer & Creative Technologist
@@ -34,7 +69,6 @@ export const AboutSection = () => {
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
                             <a href="#contact" className="cosmic-button">
-                                {" "}
                                 Get In Touch
                             </a>
 
@@ -46,16 +80,13 @@ export const AboutSection = () => {
                                 Download CV
                             </a>
                         </div>
-                    </motion.div>
+                    </div>
 
-                    <motion.div 
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
+                    <div 
+                        ref={rightContentRef}
                         className="grid grid-cols-1 gap-6"
                     >
-                        <div className="gradient-border p-6 card-hover">
+                        <div className="about-card gradient-border p-6 card-hover opacity-0">
                             <div className="flex items-start gap-4">
                                 <div className="p-3 rounded-full bg-primary/10">
                                     <Code className="h-6 w-6 text-primary" />
@@ -69,7 +100,7 @@ export const AboutSection = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="gradient-border p-6 card-hover">
+                        <div className="about-card gradient-border p-6 card-hover opacity-0">
                             <div className="flex items-start gap-4">
                                 <div className="p-3 rounded-full bg-primary/10">
                                     <Gamepad2 className="h-6 w-6 text-primary" />
@@ -83,7 +114,7 @@ export const AboutSection = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="gradient-border p-6 card-hover">
+                        <div className="about-card gradient-border p-6 card-hover opacity-0">
                             <div className="flex items-start gap-4">
                                 <div className="p-3 rounded-full bg-primary/10">
                                     <Palette className="h-6 w-6 text-primary" />
@@ -98,9 +129,9 @@ export const AboutSection = () => {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>
     );
-};
+};

@@ -5,6 +5,8 @@ import { Navbar } from "../components/Navbar";
 import { ProjectsSection } from "../components/ProjectSection";
 import { SkillsSection } from "../components/SkillSection";
 import { StarBackground } from "../components/StarBackground";
+import { FloatingShapes } from "../components/FloatingShapes";
+import { CursorGlow } from "../components/CursorGlow";
 import { WorkExperienceSection } from "../components/WorkExperienceSection";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -14,6 +16,8 @@ export const Home = () => {
             <Toaster />
 
             <StarBackground/>
+            <FloatingShapes />
+            <CursorGlow />
             <Navbar/>
 
             <HeroSection/>

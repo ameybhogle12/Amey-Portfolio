@@ -1,5 +1,6 @@
+import { useEffect, useRef } from "react";
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
-import { motion } from "framer-motion";
+import { animate } from "animejs";
 
 const projects = [
     {
@@ -63,8 +64,36 @@ const projects = [
 ];
 
 export const ProjectsSection = () => {
+    const sectionRef = useRef(null);
+    const gridRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    animate(".project-card", {
+                        opacity: [0, 1],
+                        translateY: [50, 0],
+                        scale: [0.95, 1],
+                        duration: 800,
+                        delay: (el, i) => i * 150,
+                        ease: 'outQuart'
+                    });
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <section id="projects" className="py-24 px-4 relative">
+        <section id="projects" ref={sectionRef} className="py-24 px-4 relative">
             <div className="container mx-auto max-w-5xl">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
                     {" "}
@@ -76,15 +105,11 @@ export const ProjectsSection = () => {
                     crafted with attention to detail, performance, and user experience.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
                     {projects.map((project, key) => (
-                        <motion.div
+                        <div
                             key={key}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: key * 0.15 }}
-                            className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
+                            className="project-card group bg-card rounded-lg overflow-hidden shadow-xs border border-border/50 hover:border-primary/50 transition-colors duration-300 card-hover opacity-0"
                         >
                             <div className="h-48 overflow-hidden">
                                 <img
@@ -96,8 +121,8 @@ export const ProjectsSection = () => {
 
                             <div className="p-6">
                                 <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.tags.map((tag) => (
-                                        <span className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
+                                    {project.tags.map((tag, i) => (
+                                        <span key={i} className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
                                             {tag}
                                         </span>
                                     ))}
@@ -126,7 +151,7 @@ export const ProjectsSection = () => {
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
@@ -142,4 +167,4 @@ export const ProjectsSection = () => {
             </div>
         </section>
     );
-};
+};

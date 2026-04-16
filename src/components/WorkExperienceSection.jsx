@@ -1,6 +1,8 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { animate } from "animejs";
 
 export const WorkExperienceSection = () => {
+  const sectionRef = useRef(null);
   const workExperience = [
     {
       company: "Benchmark Computer Solutions Ltd.",
@@ -17,8 +19,32 @@ export const WorkExperienceSection = () => {
     },
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          animate(".experience-card", {
+            opacity: [0, 1],
+            translateY: [20, 0],
+            duration: 800,
+            delay: (el, i) => i * 200,
+            ease: "outQuart",
+          });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="experience" className="py-15 px-4">
+    <section id="experience" ref={sectionRef} className="py-15 px-4">
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center">
           Work <span className="text-primary">Experience</span>
@@ -26,13 +52,9 @@ export const WorkExperienceSection = () => {
 
         <div className="space-y-6">
           {workExperience.map((item, index) => (
-            <motion.article
+            <article
               key={`${item.company}-${index}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="p-6 rounded-2xl border border-border bg-card/70 backdrop-blur-md shadow-md text-left"
+              className="experience-card p-6 rounded-2xl border border-border bg-card/70 backdrop-blur-md shadow-md text-left opacity-0"
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 text-left">
                 <div>
@@ -49,10 +71,10 @@ export const WorkExperienceSection = () => {
                   <li key={point}>{point}</li>
                 ))}
               </ul>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>
     </section>
   );
-};
+};

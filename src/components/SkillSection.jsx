@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { cn } from "../lib/utils";
+import { animate } from "animejs";
 
 const skills = [
   // Frontend
@@ -29,12 +29,49 @@ const categories = ["all", "frontend", "backend", "tools"];
 
 export const SkillsSection = () => {
   const [activeCategory, setActiveCategory] = useState("all");
+  const sectionRef = useRef(null);
+  const gridRef = useRef(null);
 
   const filteredSkills = skills.filter(
     (skill) => activeCategory === "all" || skill.category === activeCategory
   );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Stagger cards
+          animate(".skill-card", {
+            opacity: [0, 1],
+            translateY: [30, 0],
+            duration: 600,
+            delay: (el, i) => i * 80,
+            ease: "outQuart",
+          });
+
+          // Animate progress bars
+          animate(".skill-progress-fill", {
+            width: (el) => el.getAttribute("data-level") + "%",
+            duration: 1500,
+            delay: (el, i) => i * 100 + 400,
+            ease: "outExpo",
+          });
+
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [activeCategory]); // Re-run if category changes to re-animate
+
   return (
-    <section id="skills" className="py-24 px-4 relative bg-background/45 dark:bg-background/20">
+    <section id="skills" ref={sectionRef} className="py-24 px-4 relative bg-background/45 dark:bg-background/20">
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
           My <span className="text-primary"> Skills</span>
@@ -48,8 +85,8 @@ export const SkillsSection = () => {
               className={cn(
                 "px-5 py-2 rounded-full transition-colors duration-300 capitalize",
                 activeCategory === category
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary/70 text-forefround hover:bd-secondary"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "bg-secondary/70 text-foreground hover:bg-secondary"
               )}
             >
               {category}
@@ -57,35 +94,29 @@ export const SkillsSection = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" ref={gridRef}>
           {filteredSkills.map((skill, key) => (
-            <motion.div
+            <div
               key={key}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: key * 0.1 }}
-              className="bg-card p-6 rounded-lg shadow-xs card-hover"
+              className="skill-card bg-card p-6 rounded-lg shadow-xs border border-border/50 hover:border-primary/30 transition-all duration-300 card-hover opacity-0"
             >
-              <div className="text-left mb-4">
+              <div className="text-left mb-4 flex justify-between items-center">
                 <h3 className="font-semibold text-lg"> {skill.name}</h3>
-              </div>
-              <div className="w-full bg-secondary/50 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-primary h-2 rounded-full origin-left animate-[grow_1.5s_ease-out]"
-                  style={{ width: skill.level + "%" }}
-                />
-              </div>
-
-              <div className="text-right mt-1">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm font-medium text-primary">
                   {skill.level}%
                 </span>
               </div>
-            </motion.div>
+              <div className="w-full bg-secondary/30 h-2 rounded-full overflow-hidden">
+                <div
+                  className="skill-progress-fill bg-primary h-2 rounded-full origin-left"
+                  data-level={skill.level}
+                  style={{ width: "0%" }}
+                />
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
+};
