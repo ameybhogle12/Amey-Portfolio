@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Code, Gamepad2, Palette } from "lucide-react";
 import { animate } from "animejs";
+import { useSplitHeading } from "../hooks/useSplitHeading";
 
 export const AboutSection = () => {
     const sectionRef = useRef(null);
     const leftContentRef = useRef(null);
     const rightContentRef = useRef(null);
+    const headingRef = useSplitHeading();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -44,7 +46,7 @@ export const AboutSection = () => {
     return (
         <section id="about" ref={sectionRef} className="py-24 px-4 relative">
             <div className="container mx-auto max-w-5xl">
-                <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+                <h2 ref={headingRef} className="text-3xl md:text-4xl font-bold mb-12 text-center">
                     About <span className="text-primary"> Me</span>
                 </h2>
 

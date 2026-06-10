@@ -10,9 +10,11 @@ import {
 import { cn } from "../lib/utils";
 import { toast } from "sonner";
 import { animate } from "animejs";
+import { useSplitHeading } from "../hooks/useSplitHeading";
 
 export const ContactSection = () => {
     const sectionRef = useRef(null);
+    const headingRef = useSplitHeading();
     const infoRef = useRef(null);
     const formRef = useRef(null);
     const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -107,7 +109,7 @@ export const ContactSection = () => {
     return (
         <section id="contact" ref={sectionRef} className="py-24 px-4 relative bg-background/45 dark:bg-background/20">
             <div className="container mx-auto max-w-5xl">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+                <h2 ref={headingRef} className="text-3xl md:text-4xl font-bold mb-4 text-center">
                     Get In <span className="text-primary"> Touch</span>
                 </h2>
 

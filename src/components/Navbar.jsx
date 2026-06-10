@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { createAnimatable } from "animejs";
 
 const navItems = [
   { name: "Home", href: "#hero" },
@@ -16,6 +17,7 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const progressRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -25,6 +27,29 @@ export const Navbar = () => {
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll progress bar: Animatable gives the bar a smooth eased chase
+  // toward the real scroll position instead of jumping per scroll event
+  useEffect(() => {
+    const bar = createAnimatable(progressRef.current, {
+      scaleX: 350,
+      ease: "out(2)",
+    });
+
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.scaleX(max > 0 ? window.scrollY / max : 0);
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+      bar.revert();
+    };
   }, []);
 
   // Prevent scrolling when menu is open
@@ -82,6 +107,14 @@ export const Navbar = () => {
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+
+        {/* Scroll progress indicator */}
+        <span
+          ref={progressRef}
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 w-full h-[2.5px] origin-left bg-gradient-to-r from-primary to-purple-500"
+          style={{ transform: "scaleX(0)" }}
+        />
       </nav>
 
       {mounted && createPortal(

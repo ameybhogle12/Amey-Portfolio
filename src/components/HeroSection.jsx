@@ -1,6 +1,14 @@
 import { useEffect, useRef } from "react";
 import { ArrowDown } from "lucide-react";
-import { animate, spring } from "animejs";
+import {
+    animate,
+    createAnimatable,
+    createDraggable,
+    createTimeline,
+    spring,
+    stagger,
+    utils,
+} from "animejs";
 
 export const HeroSection = () => {
     const sectionRef = useRef(null);
@@ -10,63 +18,36 @@ export const HeroSection = () => {
     const buttonRef = useRef(null);
     const scrollRef = useRef(null);
 
+    const orbRef = useRef(null);
+
     useEffect(() => {
-        // Initial state: hidden
-        animate([titleRef.current, nameRef.current, descriptionRef.current, buttonRef.current], {
+        const chars = nameRef.current.querySelectorAll(".name-char");
+        const nameText = nameRef.current.querySelector("text");
+
+        utils.set([titleRef.current, descriptionRef.current, buttonRef.current], {
             opacity: 0,
             translateY: 20,
-            duration: 0
         });
+        utils.set(chars, { strokeDasharray: 500, strokeDashoffset: 500 });
 
-        // Split name into letters for animation if possible, 
-        // but for now let's just do a clean stagger of the components
-        
-        const timeline = [
-            {
-                target: titleRef.current,
+        // One choreographed intro: title -> strokes trace -> fill blooms
+        // while the stroke recedes -> description -> button springs in
+        const tl = createTimeline({ defaults: { ease: "outQuart" } })
+            .add(titleRef.current, { opacity: [0, 1], translateY: [30, 0], duration: 900 })
+            .add(chars, {
+                strokeDashoffset: [500, 0],
+                duration: 1700,
+                delay: stagger(60),
+                ease: "inOutQuart",
+            }, "-=600")
+            .add(nameText, { fillOpacity: [0, 1], duration: 1100, ease: "outQuad" }, "-=1100")
+            .add(chars, { strokeOpacity: [1, 0.25], duration: 1000, ease: "outQuad" }, "<<+=300")
+            .add(descriptionRef.current, { opacity: [0, 1], translateY: [30, 0], duration: 1100 }, "-=1500")
+            .add(buttonRef.current, {
                 opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 800,
-                ease: 'outQuart'
-            },
-            {
-                target: nameRef.current,
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 800,
-                ease: 'outQuart',
-                delay: -600 // overlap
-            },
-            {
-                target: descriptionRef.current,
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 1000,
-                ease: 'outQuart',
-                delay: -600
-            },
-            {
-                target: buttonRef.current,
-                opacity: [0, 1],
-                scale: [0.9, 1],
-                duration: 800,
-                ease: spring({ mass: 1, stiffness: 100, damping: 10 }),
-                delay: -600
-            }
-        ];
-
-        // Execute timeline manually in V4 (V4 timeline API is slightly different or replaced by sequences)
-        // Actually, we can just run them with delays
-        animate(titleRef.current, { opacity: [0, 1], translateY: [30, 0], duration: 1000, ease: 'outQuart' });
-        animate(nameRef.current, { opacity: [0, 1], translateY: [30, 0], duration: 1000, ease: 'outQuart', delay: 200 });
-        animate(descriptionRef.current, { opacity: [0, 1], translateY: [30, 0], duration: 1200, ease: 'outQuart', delay: 400 });
-        animate(buttonRef.current, { 
-            opacity: [0, 1], 
-            scale: [0.8, 1], 
-            duration: 1000, 
-            ease: spring({ mass: 1, stiffness: 150, damping: 15 }), 
-            delay: 600 
-        });
+                scale: [0.8, 1],
+                ease: spring({ mass: 1, stiffness: 150, damping: 15 }),
+            }, "-=800");
 
         // Floating animation for scroll indicator
         animate(scrollRef.current, {
@@ -76,6 +57,43 @@ export const HeroSection = () => {
             ease: 'easeInOutQuad'
         });
 
+        // Name gently follows the cursor (Animatable = smooth eased chase)
+        const nameFollow = createAnimatable(nameRef.current, {
+            translateX: 600,
+            translateY: 600,
+            ease: "out(3)",
+        });
+        const onMouseMove = (e) => {
+            const nx = (e.clientX / window.innerWidth) * 2 - 1;
+            const ny = (e.clientY / window.innerHeight) * 2 - 1;
+            nameFollow.translateX(nx * 16);
+            nameFollow.translateY(ny * 12);
+        };
+        window.addEventListener("mousemove", onMouseMove, { passive: true });
+
+        // Draggable orb: grab it and throw it, it bounces inside the section
+        let orbDrag;
+        let orbPulse;
+        if (orbRef.current) {
+            orbDrag = createDraggable(orbRef.current, {
+                container: sectionRef.current,
+            });
+            orbPulse = animate(".orb-core", {
+                scale: [1, 1.15],
+                duration: 1800,
+                alternate: true,
+                loop: true,
+                ease: "inOutSine",
+            });
+        }
+
+        return () => {
+            window.removeEventListener("mousemove", onMouseMove);
+            tl.revert();
+            nameFollow.revert();
+            if (orbDrag) orbDrag.revert();
+            if (orbPulse) orbPulse.revert();
+        };
     }, []);
 
     return (
@@ -84,18 +102,54 @@ export const HeroSection = () => {
             ref={sectionRef}
             className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden"
         >
-            {/* Subtle light effect following mouse could be added here */}
-            
+            {/* Draggable orb easter egg — grab it and throw it */}
+            <div
+                ref={orbRef}
+                title="Go ahead, throw me"
+                className="hidden md:block absolute top-[22%] right-[16%] z-10 w-12 h-12 cursor-grab active:cursor-grabbing"
+            >
+                <div
+                    className="orb-core w-full h-full rounded-full bg-gradient-to-br from-primary to-purple-500"
+                    style={{ boxShadow: "0 0 28px 8px rgba(139, 92, 246, 0.45)" }}
+                />
+            </div>
+
             <div className="container max-w-4xl mx-auto text-center z-10">
                 <div className="space-y-6">
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
                         <span ref={titleRef} className="inline-block"> Hi, I'm</span>
-                        <div ref={nameRef} className="block mt-2">
-                             <span className="text-primary">Amey</span>
-                             <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent ml-3">
-                                Bhogle
-                            </span>
-                        </div>
+                        <svg
+                            ref={nameRef}
+                            viewBox="0 0 560 100"
+                            role="img"
+                            aria-label="Amey Bhogle"
+                            className="block mt-2 mx-auto w-[92%] max-w-[560px] overflow-visible"
+                        >
+                            <defs>
+                                <linearGradient id="name-grad" gradientUnits="userSpaceOnUse" x1="50" y1="0" x2="510" y2="0">
+                                    <stop offset="0%" stopColor="var(--color-primary)" />
+                                    <stop offset="100%" stopColor="var(--color-purple-500, #a855f7)" />
+                                </linearGradient>
+                            </defs>
+                            <text
+                                x="280"
+                                y="76"
+                                textAnchor="middle"
+                                fontSize="72"
+                                className="font-bold tracking-tight"
+                                fill="url(#name-grad)"
+                                stroke="url(#name-grad)"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                                style={{ fillOpacity: 0 }}
+                            >
+                                {"Amey Bhogle".split("").map((char, i) => (
+                                    <tspan key={i} className="name-char">
+                                        {char === " " ? " " : char}
+                                    </tspan>
+                                ))}
+                            </text>
+                        </svg>
                     </h1>
 
                     <p ref={descriptionRef} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
