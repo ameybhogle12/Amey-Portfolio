@@ -5,96 +5,45 @@ import { useSplitHeading } from "../hooks/useSplitHeading";
 
 const skills = [
   // Frontend
-  { name: "HTML/CSS", level: 80, category: "frontend" },
-  { name: "JavaScript", level: 60, category: "frontend" },
-  { name: "React", level: 60, category: "frontend" },
-  { name: "Dart", level: 15, category: "frontend" },
+  { name: "React", category: "frontend" },
+  { name: "JavaScript", category: "frontend" },
+  { name: "HTML/CSS", category: "frontend" },
+  { name: "Tailwind CSS", category: "frontend" },
 
   // Backend
-  { name: "Java", level: 50, category: "backend" },
-  { name: "Kotlin", level: 65, category: "backend" },
-  { name: "Node.js", level: 40, category: "backend" },
-  { name: "C#", level: 30, category: "backend" },
-  { name: "SQL", level: 10, category: "backend" },
+  { name: "Node.js", category: "backend" },
+  { name: "Express.js", category: "backend" },
+  { name: "REST APIs", category: "backend" },
+  { name: "MSSQL", category: "backend" },
+  { name: "MongoDB", category: "backend" },
+  { name: "SQL", category: "backend" },
+  { name: "Java", category: "backend" },
+
+  // Mobile
+  { name: "Flutter", category: "mobile" },
+  { name: "Dart", category: "mobile" },
+  { name: "Kotlin", category: "mobile" },
+  { name: "Provider", category: "mobile" },
+  { name: "Hive", category: "mobile" },
+  { name: "Firebase", category: "mobile" },
+
+  // AI
+  { name: "RAG", category: "ai" },
+  { name: "MCP", category: "ai" },
+  { name: "LLM Integration", category: "ai" },
+  { name: "TensorFlow Lite", category: "ai" },
+  { name: "Python", category: "ai" },
+  { name: "Ollama", category: "ai" },
 
   // Tools
-  { name: "Git/GitHub", level: 60, category: "tools" },
-  { name: "Figma", level: 85, category: "tools" },
-  { name: "VS Code", level: 95, category: "tools" },
-  { name: "Unity", level: 25, category: "tools" },
-  { name: "Blender", level: 35, category: "tools" },
-  { name: "After Effects/Premiere Pro", level: 70, category: "tools" },
+  { name: "Git/GitHub", category: "tools" },
+  { name: "Figma", category: "tools" },
+  { name: "Android Studio", category: "tools" },
+  { name: "VS Code", category: "tools" },
+  { name: "Unity", category: "tools" },
 ];
 
-const categories = ["all", "frontend", "backend", "tools"];
-
-const RING_RADIUS = 42;
-const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-
-// Circular SVG progress ring that draws itself and counts up when visible
-const SkillRing = ({ level, inView }) => {
-  const circleRef = useRef(null);
-  const numRef = useRef(null);
-
-  useEffect(() => {
-    if (!inView) return;
-
-    animate(circleRef.current, {
-      strokeDashoffset: [RING_CIRCUMFERENCE, RING_CIRCUMFERENCE * (1 - level / 100)],
-      duration: 1500,
-      delay: 200,
-      ease: "outExpo",
-    });
-
-    const counter = { value: 0 };
-    const counterAnim = animate(counter, {
-      value: level,
-      duration: 1500,
-      delay: 200,
-      ease: "outExpo",
-      onUpdate: () => {
-        if (numRef.current) {
-          numRef.current.textContent = `${Math.round(counter.value)}%`;
-        }
-      },
-    });
-
-    return () => counterAnim.revert();
-  }, [inView, level]);
-
-  return (
-    <div className="relative w-24 h-24">
-      <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-        <circle
-          cx="50"
-          cy="50"
-          r={RING_RADIUS}
-          fill="none"
-          strokeWidth="8"
-          className="stroke-secondary/40"
-        />
-        <circle
-          ref={circleRef}
-          cx="50"
-          cy="50"
-          r={RING_RADIUS}
-          fill="none"
-          strokeWidth="8"
-          strokeLinecap="round"
-          stroke="url(#skill-ring-grad)"
-          strokeDasharray={RING_CIRCUMFERENCE}
-          strokeDashoffset={RING_CIRCUMFERENCE}
-        />
-      </svg>
-      <span
-        ref={numRef}
-        className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-primary"
-      >
-        0%
-      </span>
-    </div>
-  );
-};
+const categories = ["all", "frontend", "backend", "mobile", "ai", "tools"];
 
 export const SkillsSection = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -102,7 +51,6 @@ export const SkillsSection = () => {
   const gridRef = useRef(null);
   const layoutRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [inView, setInView] = useState(false);
   const headingRef = useSplitHeading();
 
   const filteredSkills = skills.filter(
@@ -121,7 +69,7 @@ export const SkillsSection = () => {
     if (gridRef.current && !isMobile) {
       layoutRef.current = createLayout(gridRef.current, {
         duration: 600,
-        easing: 'out(3)',
+        easing: "out(3)",
       });
     }
     return () => {
@@ -131,28 +79,28 @@ export const SkillsSection = () => {
 
   const handleCategoryChange = (category) => {
     const isLayoutActive = layoutRef.current && !isMobile;
-    
+
     if (isLayoutActive) {
       layoutRef.current.record();
     }
-    
+
     setActiveCategory(category);
-    
+
     if (isLayoutActive) {
       // Small timeout to ensure React has started the render cycle
       requestAnimationFrame(() => {
         layoutRef.current.animate({
           duration: 600,
-          easing: 'out(4)',
+          easing: "out(4)",
         });
       });
     } else {
       // Fallback for mobile: simple fade stagger
-      animate(".skill-card", {
+      animate(".skill-pill", {
         opacity: [0, 1],
-        translateY: [20, 0],
+        translateY: [12, 0],
         duration: 400,
-        delay: (el, i) => i * 40,
+        delay: (el, i) => i * 25,
         ease: "outQuad",
       });
     }
@@ -162,17 +110,14 @@ export const SkillsSection = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Initial entry animation
-          animate(".skill-card", {
+          animate(".skill-pill", {
             opacity: [0, 1],
-            translateY: [30, 0],
-            duration: 600,
-            delay: (el, i) => i * 80,
+            translateY: [16, 0],
+            scale: [0.9, 1],
+            duration: 500,
+            delay: (el, i) => i * 35,
             ease: "outQuart",
           });
-
-          // Rings animate themselves once visible
-          setInView(true);
 
           observer.disconnect();
         }
@@ -194,7 +139,7 @@ export const SkillsSection = () => {
           My <span className="text-primary"> Skills</span>
         </h2>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category, key) => (
             <button
               key={key}
@@ -206,34 +151,22 @@ export const SkillsSection = () => {
                   : "bg-secondary/70 text-foreground hover:bg-secondary"
               )}
             >
-              {category}
+              {category === "ai" ? "AI" : category}
             </button>
           ))}
         </div>
 
-        {/* Shared gradient for all skill rings */}
-        <svg className="absolute w-0 h-0" aria-hidden="true">
-          <defs>
-            <linearGradient id="skill-ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--color-primary)" />
-              <stop offset="100%" stopColor="var(--color-purple-500, #a855f7)" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" ref={gridRef}>
+        <div className="flex flex-wrap justify-center gap-3" ref={gridRef}>
           {filteredSkills.map((skill) => (
-            <div
-              key={skill.name} // Use name as key for better layout tracking
-              className="skill-card bg-card p-6 rounded-lg shadow-xs border border-border/50 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center gap-3"
+            <span
+              key={skill.name}
+              className="skill-pill px-5 py-2.5 rounded-full bg-card border border-border/60 text-sm font-medium shadow-xs hover:border-primary/50 hover:text-primary hover:scale-105 transition-all duration-300 cursor-default"
             >
-              <SkillRing level={skill.level} inView={inView} />
-              <h3 className="font-semibold text-lg text-center">{skill.name}</h3>
-            </div>
+              {skill.name}
+            </span>
           ))}
         </div>
       </div>
     </section>
   );
 };
-

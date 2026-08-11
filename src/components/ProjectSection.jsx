@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Github, X } from "lucide-react";
+import { ArrowRight, ExternalLink, Github, Lock, X } from "lucide-react";
 import { animate, spring } from "animejs";
 import { cn } from "../lib/utils";
 import { useSplitHeading } from "../hooks/useSplitHeading";
@@ -7,38 +7,51 @@ import { useSplitHeading } from "../hooks/useSplitHeading";
 const projects = [
     {
         id: 1,
-        title: "AgriCare",
-        description: "An Android application that uses machine learning to provide crop-related insights through a clean and modern user interface.",
-        image: "/projects/Agricare.png",
-        tags: ["Kotlin", "Python", "Jetpack Compose"],
-        githubUrl: "https://github.com/ameybhogle12/AgriCare.git",
+        title: "Trip & Track",
+        description:
+            "An offline-first personal finance app built with Provider for state management and Hive for local persistence. Features a multi-wallet ledger, budget tracking, automated EMI and subscription logging via WorkManager, a split-expense settlement engine, savings goals, fl_chart analytics, biometric authentication, and CSV export.",
+        image: "/projects/Trip & Track.png",
+        tags: ["Flutter", "Dart", "Provider", "Hive"],
+        githubUrl: null,
+        liveUrl: "https://play.google.com/store/apps/details?id=com.ameybhogle.expensetracker",
+        liveLabel: "Live on Google Play",
     },
     {
         id: 2,
+        title: "MYCROFT — Offline AI Voice Assistant",
+        description:
+            "A fully local voice assistant with wake-word detection, speech-to-text, a self-hosted LLM (Mistral via Ollama) for intent-to-action mapping, and neural TTS. Executes system commands with VAD-based listening and a live desktop UI — entirely offline, no cloud calls.",
+        image: null,
+        tags: ["Python", "Ollama", "Mistral", "Neural TTS"],
+        githubUrl: null,
+        // Personal assistant running on my own machine — source stays private
+        repoPrivate: true,
+        // Runs entirely in the terminal, so the card shows a stylised session
+        // instead of a screenshot.
+        terminalPreview: [
+            "$ python mycroft.py",
+            "● listening for wake word...",
+            '▸ "mycroft, open my notes"',
+            "✓ intent: open_app -> executing",
+        ],
+    },
+    {
+        id: 3,
+        title: "AgriCare",
+        description:
+            "An offline-first Flutter app for rural connectivity, built as part of a research paper. Integrates TensorFlow Lite for on-device crop inference alongside an LLM for conversational farming and healthcare guidance, with a low-power UI designed for low-connectivity rural accessibility.",
+        image: "/projects/Agricare.png",
+        tags: ["Flutter", "Dart", "TensorFlow Lite"],
+        githubUrl: "https://github.com/ameybhogle12/agricare_flutter_app.git",
+    },
+    {
+        id: 4,
         title: "Admission Enquiry ChatBot",
         description:
             "A web-based chatbot that automates institute admission queries using a React frontend and Node.js backend.",
         image: "/projects/ChatBot.png",
         tags: ["React", "Node.js", "NLP"],
-        githubUrl: "#",
-    },
-    {
-        id: 3,
-        title: "Tetris",
-        description:
-            "A classic Android Tetris game built from scratch, focusing on core game mechanics, collision logic, and scoring.",
-        image: "/projects/Tetris.png",
-        tags: ["Java", "Android Studio", "XML"],
-        githubUrl: "https://github.com/ameybhogle12/Tetris.git",
-    },
-    {
-        id: 4,
-        title: "Weather Website",
-        description:
-            "A dynamic Java-based web application that displays real-time weather data using JSP and API integration.",
-        image: "/projects/Weather.png",
-        tags: ["Java", "JSP", "HTML/CSS"],
-        githubUrl: "https://github.com/ameybhogle12/Weather-Website.git",
+        githubUrl: null,
     },
     {
         id: 5,
@@ -51,14 +64,78 @@ const projects = [
     },
     {
         id: 6,
-        title: "Trip & Track",
+        title: "Tetris",
         description:
-            "A personal finance Android app for tracking expenses, incomes, and split bills across multiple wallets. Features automatic subscription and EMI logging, budget monitoring with charts, savings goals, and biometric app lock — all stored fully offline.",
-        image: "/projects/Trip & Track.png",
-        tags: ["Flutter", "Dart", "Hive"],
-        githubUrl: "In progress...",
+            "A classic Android Tetris game built from scratch, focusing on core game mechanics, collision logic, and scoring.",
+        image: "/projects/Tetris.png",
+        tags: ["Java", "Android Studio", "XML"],
+        githubUrl: "https://github.com/ameybhogle12/Tetris.git",
+    },
+    {
+        id: 7,
+        title: "Weather Website",
+        description:
+            "A dynamic Java-based web application that displays real-time weather data using JSP and API integration.",
+        image: "/projects/Weather.png",
+        tags: ["Java", "JSP", "HTML/CSS"],
+        githubUrl: "https://github.com/ameybhogle12/Weather-Website.git",
     },
 ];
+
+// Projects without a screenshot fall back to a terminal plate (for CLI tools)
+// or a gradient plate carrying their initials, so a missing asset never
+// renders as a broken image.
+const ProjectThumb = ({ project, className }) => {
+    if (project.image) {
+        return (
+            <img
+                src={project.image}
+                alt={project.title}
+                className={className}
+            />
+        );
+    }
+
+    if (project.terminalPreview) {
+        return (
+            <div className="w-full h-full bg-[#0b0f17] p-4 flex flex-col gap-3 overflow-hidden select-none">
+                <div className="flex gap-1.5 shrink-0">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+                </div>
+                <div className="font-mono text-[11px] leading-6 space-y-0.5 min-w-0">
+                    {project.terminalPreview.map((line, i) => (
+                        <p
+                            key={i}
+                            className={cn(
+                                "truncate",
+                                i === 0 ? "text-primary" : "text-slate-400"
+                            )}
+                        >
+                            {line}
+                        </p>
+                    ))}
+                    <span className="inline-block w-1.5 h-3.5 bg-primary/80 align-middle animate-pulse" />
+                </div>
+            </div>
+        );
+    }
+
+    const initials = project.title
+        .replace(/[—-].*$/, "")
+        .trim()
+        .slice(0, 2)
+        .toUpperCase();
+
+    return (
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/25 via-purple-500/20 to-background">
+            <span className="text-4xl font-bold tracking-tight text-primary/70">
+                {initials}
+            </span>
+        </div>
+    );
+};
 
 export const ProjectsSection = () => {
     const sectionRef = useRef(null);
@@ -133,11 +210,16 @@ export const ProjectsSection = () => {
                             className="project-card group bg-card rounded-lg overflow-hidden shadow-xs border border-border/50 hover:border-primary/50 transition-colors duration-300 card-hover cursor-pointer"
                         >
                             <div className="h-48 overflow-hidden relative">
-                                <img
-                                    src={project.image}
-                                    alt={project.title}
+                                <ProjectThumb
+                                    project={project}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
+                                {project.liveUrl && (
+                                    <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium bg-background/80 backdrop-blur-sm border border-primary/40 text-primary">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                        Live
+                                    </span>
+                                )}
                                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
 
@@ -194,9 +276,8 @@ export const ProjectsSection = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2">
                             <div className="h-64 md:h-full overflow-hidden">
-                                <img
-                                    src={selectedProject.image}
-                                    alt={selectedProject.title}
+                                <ProjectThumb
+                                    project={selectedProject}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -213,20 +294,43 @@ export const ProjectsSection = () => {
                                     {selectedProject.description}
                                 </p>
                                 
-                                <div className="flex items-center gap-4">
+                                <div className="flex flex-col sm:flex-row items-stretch gap-3">
+                                    {selectedProject.liveUrl && (
+                                        <a
+                                            href={selectedProject.liveUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 cosmic-button flex items-center justify-center gap-2 text-sm"
+                                        >
+                                            {selectedProject.liveLabel ?? "View Live"}
+                                            <ExternalLink size={16} />
+                                        </a>
+                                    )}
+
                                     {selectedProject.githubUrl?.startsWith("http") ? (
                                         <a
                                             href={selectedProject.githubUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex-1 cosmic-button flex items-center justify-center gap-2 text-sm"
+                                            className={cn(
+                                                "flex-1 flex items-center justify-center gap-2 text-sm",
+                                                selectedProject.liveUrl
+                                                    ? "px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
+                                                    : "cosmic-button"
+                                            )}
                                         >
                                             View on GitHub <Github size={16} />
                                         </a>
-                                    ) : (
-                                        <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-2 rounded-full border border-border text-muted-foreground cursor-not-allowed select-none">
-                                            Repo Coming Soon <Github size={16} />
+                                    ) : selectedProject.repoPrivate ? (
+                                        <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-2 rounded-full border border-border text-muted-foreground select-none">
+                                            Private Project <Lock size={16} />
                                         </span>
+                                    ) : (
+                                        !selectedProject.liveUrl && (
+                                            <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-2 rounded-full border border-border text-muted-foreground cursor-not-allowed select-none">
+                                                Repo Coming Soon <Github size={16} />
+                                            </span>
+                                        )
                                     )}
                                 </div>
                             </div>

@@ -17,14 +17,14 @@ export const WorkExperienceSection = () => {
       highlights: [
         "Built a production MCP server from scratch integrated with MongoDB, enabling AI-driven database manipulation through natural language",
         "Implemented RAG (Retrieval Augmented Generation) for context-aware responses, grounding the AI's outputs in real business data",
-        "Developed an intelligent email thread parser using Gemini API to extract structured business fields (LOI, CPI, qualifications) from unstructured client conversations",
+        "Developed an intelligent email thread parser using the Gemini and Groq APIs to extract structured business fields (LOI, CPI, qualifications) from unstructured client conversations",
         "Implemented multi-step intent detection to classify email threads by project status and surface contextual suggested actions",
         "Automated end-to-end RFQ creation and project conversion workflow via a conversational AI interface with confirmation flows",
       ],
     },
     {
       company: "Benchmark Computer Solutions Ltd.",
-      role: "Software Intern",
+      role: "Software Developer Intern",
       period: "Oct 2025 - Apr 2026",
       description:
         "Full-stack development intern contributing across multiple production systems. Worked on bug resolution, feature implementation, and system redesigns using React, Node.js, Flutter, and MSSQL. Delivered solutions across employee management, CRM, and live international-scale applications.",

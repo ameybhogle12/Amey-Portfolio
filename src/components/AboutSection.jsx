@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Code, Gamepad2, Palette } from "lucide-react";
+import { Code, Smartphone, Sparkles } from "lucide-react";
 import { animate } from "animejs";
 import { useSplitHeading } from "../hooks/useSplitHeading";
 
@@ -56,17 +56,20 @@ export const AboutSection = () => {
                         className="space-y-6 opacity-0"
                     >
                         <h3 className="text-2xl font-semibold">
-                            Software Developer & Creative Technologist
+                            Full-Stack Developer & Mobile App Builder
                         </h3>
 
                         <p className="text-muted-foreground">
-                            I’m a Software Developer with a strong interest in Android and web development,
-                            focused on building practical, user-friendly applications.
+                            I’m a Full-Stack Developer working across React, Node.js, Express and REST API
+                            design, with production experience building CRM modules end-to-end — frontend,
+                            backend routes, and SQL stored procedures.
                         </p>
 
                         <p className="text-muted-foreground">
-                            From AI-powered chatbots to games and full-stack projects, I enjoy turning ideas
-                            into real, working products while continuously improving my skills.
+                            I’ve shipped a Flutter finance app to the Google Play Store and built a
+                            RAG-based AI agent with multi-step intent detection that automates real
+                            business workflows. I like taking an idea all the way to something people
+                            actually use.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
@@ -75,7 +78,7 @@ export const AboutSection = () => {
                             </a>
 
                             <a
-                                href="/Amey_Bhogle_Resume.pdf"
+                                href="/AmeyBhogle_Resume.pdf"
                                 download
                                 className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
                             >
@@ -94,10 +97,10 @@ export const AboutSection = () => {
                                     <Code className="h-6 w-6 text-primary" />
                                 </div>
                                 <div className="text-left">
-                                    <h4 className="font-semibold text-lg"> Web & Android Development</h4>
+                                    <h4 className="font-semibold text-lg"> Full-Stack Development</h4>
                                     <p className="text-muted-foreground">
-                                        Building responsive web applications and Android apps using modern frameworks
-                                        and clean architecture.
+                                        Building end-to-end web applications with React, Node.js and Express —
+                                        REST APIs, database design, and SQL stored procedures.
                                     </p>
                                 </div>
                             </div>
@@ -105,13 +108,13 @@ export const AboutSection = () => {
                         <div className="about-card gradient-border p-6 card-hover opacity-0">
                             <div className="flex items-start gap-4">
                                 <div className="p-3 rounded-full bg-primary/10">
-                                    <Gamepad2 className="h-6 w-6 text-primary" />
+                                    <Smartphone className="h-6 w-6 text-primary" />
                                 </div>
                                 <div className="text-left">
-                                    <h4 className="font-semibold text-lg">Game Development</h4>
+                                    <h4 className="font-semibold text-lg">Mobile Development</h4>
                                     <p className="text-muted-foreground">
-                                        Creating interactive games and mechanics while exploring game logic,
-                                        animations, and player experience.
+                                        Shipping offline-first Flutter and Android apps — including a personal
+                                        finance app live on the Google Play Store.
                                     </p>
                                 </div>
                             </div>
@@ -119,14 +122,14 @@ export const AboutSection = () => {
                         <div className="about-card gradient-border p-6 card-hover opacity-0">
                             <div className="flex items-start gap-4">
                                 <div className="p-3 rounded-full bg-primary/10">
-                                    <Palette className="h-6 w-6 text-primary" />
+                                    <Sparkles className="h-6 w-6 text-primary" />
                                 </div>
 
                                 <div className="text-left">
-                                    <h4 className="font-semibold text-lg">UI/UX Designing</h4>
+                                    <h4 className="font-semibold text-lg">AI & Automation</h4>
                                     <p className="text-muted-foreground">
-                                        Designing clean, intuitive interfaces with a focus on usability and user
-                                        experience.
+                                        Building RAG pipelines, MCP servers and LLM-powered parsers that turn
+                                        unstructured input into automated business workflows.
                                     </p>
                                 </div>
                             </div>

@@ -153,9 +153,9 @@ export const HeroSection = () => {
                     </h1>
 
                     <p ref={descriptionRef} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Software Developer with a strong interest in Android and full-stack development.
-                        Experienced in building real-world projects including AI chatbots, games, and web applications.
-                        Always learning and focused on writing clean, practical code.
+                        Full-Stack Developer working across React, Node.js and Express, with production
+                        experience building CRM modules end-to-end and a live Flutter app on the Play Store.
+                        Recently shipped a RAG-based AI agent that automates real business workflows.
                     </p>
 
                     <div ref={buttonRef} className="pt-4">
