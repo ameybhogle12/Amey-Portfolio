@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { animate, createAnimatable, svg, utils } from "animejs";
+import { prefersReducedMotion } from "../lib/motion";
 
 // Each blob is a real SVG <path> that morphs between two hand-drawn shapes
 // (same command structure) via svg.morphTo, plus a slow random drift.
@@ -34,6 +35,11 @@ export const FloatingShapes = () => {
   const svgRef = useRef(null);
 
   useEffect(() => {
+    // Every animation in here loops forever, and the global reduced-motion
+    // speed-up would spin them instead of stopping them. The blobs still
+    // render — they just hold their shape and position.
+    if (prefersReducedMotion()) return;
+
     const animations = [];
 
     // True path morphing between each blob and its alternate shape

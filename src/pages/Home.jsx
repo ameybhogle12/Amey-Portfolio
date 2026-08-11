@@ -8,6 +8,8 @@ import { StarBackground } from "../components/StarBackground";
 import { FloatingShapes } from "../components/FloatingShapes";
 import { CursorGlow } from "../components/CursorGlow";
 import { WorkExperienceSection } from "../components/WorkExperienceSection";
+import { ScrollComet } from "../components/ScrollComet";
+import { StatsStrip } from "../components/StatsStrip";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Home = () => {
@@ -18,11 +20,14 @@ export const Home = () => {
             <StarBackground/>
             <FloatingShapes />
             <CursorGlow />
+            <ScrollComet />
             <Navbar/>
 
             <HeroSection/>
 
             <AboutSection/>
+
+            <StatsStrip />
 
             <WorkExperienceSection />
 

@@ -39,10 +39,17 @@ export const StarBackground = () => {
     const numberOfMeteors = 4;
     const newMeteors = [];
 
+    // A meteor's tail was a flat 50-150px regardless of screen size, which on
+    // a ~360px phone reads as a scratch across the content rather than a
+    // streak in the distance. Cap it against the viewport instead.
+    const maxTail = Math.min(window.innerWidth * 0.22, 150);
+
     for (let i = 0; i < numberOfMeteors; i++) {
+      const size = Math.random() * 2 + 1;
       newMeteors.push({
         id: i,
-        size: Math.random() * 2 + 1,
+        size,
+        tail: Math.max((size / 3) * maxTail, 24),
         x: Math.random() * 100,
         y: Math.random() * 20,
         delay: Math.random() * 15,
@@ -89,6 +96,9 @@ export const StarBackground = () => {
     const handleResize = () => {
       if (isDarkMode) {
         generateStars();
+        // Tail length is derived from viewport width, so it has to be redone
+        // on resize now rather than staying at its mount-time size.
+        generateMeteors();
       } else {
         generateLightSparkles();
       }
@@ -133,7 +143,7 @@ export const StarBackground = () => {
               key={meteor.id}
               className="meteor animate-meteor"
               style={{
-                width: meteor.size * 50 + "px",
+                width: meteor.tail + "px",
                 height: meteor.size + "px",
                 left: meteor.x + "%",
                 top: meteor.y + "%",

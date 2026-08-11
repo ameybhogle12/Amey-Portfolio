@@ -9,8 +9,11 @@ import {
     stagger,
     utils,
 } from "animejs";
+import { useMagnetic } from "../hooks/useMagnetic";
+import { prefersReducedMotion } from "../lib/motion";
 
 export const HeroSection = () => {
+    const ctaRef = useMagnetic();
     const sectionRef = useRef(null);
     const titleRef = useRef(null);
     const nameRef = useRef(null);
@@ -49,13 +52,19 @@ export const HeroSection = () => {
                 ease: spring({ mass: 1, stiffness: 150, damping: 15 }),
             }, "-=800");
 
+        // Looping decorative motion is skipped entirely under reduced motion —
+        // the global engine speed-up would turn these into a strobe.
+        const decorative = !prefersReducedMotion();
+
         // Floating animation for scroll indicator
-        animate(scrollRef.current, {
-            translateY: [0, 10, 0],
-            duration: 2000,
-            loop: true,
-            ease: 'easeInOutQuad'
-        });
+        if (decorative) {
+            animate(scrollRef.current, {
+                translateY: [0, 10, 0],
+                duration: 2000,
+                loop: true,
+                ease: 'easeInOutQuad'
+            });
+        }
 
         // Name gently follows the cursor (Animatable = smooth eased chase)
         const nameFollow = createAnimatable(nameRef.current, {
@@ -78,13 +87,15 @@ export const HeroSection = () => {
             orbDrag = createDraggable(orbRef.current, {
                 container: sectionRef.current,
             });
-            orbPulse = animate(".orb-core", {
-                scale: [1, 1.15],
-                duration: 1800,
-                alternate: true,
-                loop: true,
-                ease: "inOutSine",
-            });
+            if (decorative) {
+                orbPulse = animate(".orb-core", {
+                    scale: [1, 1.15],
+                    duration: 1800,
+                    alternate: true,
+                    loop: true,
+                    ease: "inOutSine",
+                });
+            }
         }
 
         return () => {
@@ -159,10 +170,15 @@ export const HeroSection = () => {
                     </p>
 
                     <div ref={buttonRef} className="pt-4">
-                        <a href="#projects" className="cosmic-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full text-lg transition-transform inline-flex items-center gap-2 group">
-                            View My Work
-                            <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
-                        </a>
+                        {/* The magnet drives the wrapper's transform so the
+                            button keeps its own hover scale — both writing to
+                            transform on one element would fight. */}
+                        <span ref={ctaRef} className="inline-block">
+                            <a href="#projects" className="cosmic-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full text-lg transition-transform inline-flex items-center gap-2 group">
+                                View My Work
+                                <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
+                            </a>
+                        </span>
                     </div>
                 </div>
             </div>
