@@ -4,38 +4,30 @@ import { HeroSection } from "../components/HeroSection";
 import { Navbar } from "../components/Navbar";
 import { ProjectsSection } from "../components/ProjectSection";
 import { SkillsSection } from "../components/SkillSection";
-import { StarBackground } from "../components/StarBackground";
-import { FloatingShapes } from "../components/FloatingShapes";
-import { CursorGlow } from "../components/CursorGlow";
 import { WorkExperienceSection } from "../components/WorkExperienceSection";
-import { ScrollComet } from "../components/ScrollComet";
-import { StatsStrip } from "../components/StatsStrip";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Home = () => {
     return (
-        <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+        <div className="min-h-screen overflow-x-hidden">
             <Toaster />
 
-            <StarBackground/>
-            <FloatingShapes />
-            <CursorGlow />
-            <ScrollComet />
             <Navbar/>
 
             <HeroSection/>
 
-            <AboutSection/>
+            {/* Everything after the hero is printed on paper */}
+            <main className="paper-page">
+                <AboutSection/>
 
-            <StatsStrip />
+                <WorkExperienceSection />
 
-            <WorkExperienceSection />
+                <SkillsSection/>
 
-            <SkillsSection/>
+                <ProjectsSection/>
 
-            <ProjectsSection/>
-             
-             <ContactSection/>
+                <ContactSection/>
+            </main>
 
         </div>
     );

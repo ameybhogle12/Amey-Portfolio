@@ -179,10 +179,10 @@ export const SkillsSection = () => {
               key={key}
               onClick={() => handleCategoryChange(category)}
               className={cn(
-                "px-4 py-1.5 text-sm sm:px-5 sm:py-2 sm:text-base rounded-full transition-colors duration-300 capitalize",
+                "px-4 py-1.5 text-sm sm:px-5 sm:py-2 sm:text-base border-2 transition-colors duration-200 font-display uppercase tracking-wider",
                 activeCategory === category
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                  : "bg-secondary/70 text-foreground hover:bg-secondary"
+                  ? "bg-primary text-primary-foreground border-ink"
+                  : "border-border text-foreground hover:border-primary"
               )}
             >
               {category === "ai" ? "AI" : category}
@@ -196,7 +196,7 @@ export const SkillsSection = () => {
           {filteredSkills.map((skill) => (
             <span
               key={skill.name}
-              className="skill-pill px-3 py-1.5 text-xs sm:px-5 sm:py-2.5 sm:text-sm rounded-full bg-card border border-border/60 font-medium shadow-xs hover:border-primary/50 hover:text-primary hover:scale-105 transition-all duration-300 cursor-default"
+              className="skill-pill px-3 py-1.5 text-xs sm:px-5 sm:py-2.5 sm:text-sm bg-card border-2 border-border font-medium hover:border-primary/50 hover:text-primary hover:scale-105 transition-all duration-300 cursor-default"
             >
               {skill.name}
             </span>

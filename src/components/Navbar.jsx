@@ -70,18 +70,17 @@ export const Navbar = () => {
           // are always above the portal overlay (z-50)
           "z-[100]", 
           isScrolled
-            ? "py-3 bg-background/75 border-b border-border/40 shadow-lg"
+            ? "py-3 bg-background/85 border-b-2 border-ink"
             : "py-5 bg-transparent"
         )}
       >
         <div className="container flex items-center justify-between">
           <a
-            className="text-xl font-bold text-primary flex items-center"
+            className="font-display uppercase tracking-wider text-xl flex items-center"
             href="#hero"
           >
             <span className="relative z-10">
-              <span className="text-glow text-foreground"> Amey Bhogle's </span>{" "}
-              Portfolio
+              Amey <span className="text-primary">Bhogle</span>
             </span>
           </a>
 
@@ -112,7 +111,7 @@ export const Navbar = () => {
         <span
           ref={progressRef}
           aria-hidden="true"
-          className="absolute bottom-0 left-0 w-full h-[2.5px] origin-left bg-gradient-to-r from-primary to-purple-500"
+          className="absolute bottom-0 left-0 w-full h-[2.5px] origin-left bg-primary"
           style={{ transform: "scaleX(0)" }}
         />
       </nav>

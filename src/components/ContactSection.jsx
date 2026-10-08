@@ -127,7 +127,7 @@ export const ContactSection = () => {
 
                         <div className="space-y-6">
                             <div className="contact-item flex items-start space-x-4 opacity-0">
-                                <div className="p-3 rounded-full bg-primary/10">
+                                <div className="p-3 border-2 border-primary bg-primary/10">
                                     <Mail className="h-6 w-6 text-primary" />
                                 </div>
                                 <div>
@@ -141,7 +141,7 @@ export const ContactSection = () => {
                                 </div>
                             </div>
                             <div className="contact-item flex items-start space-x-4 opacity-0">
-                                <div className="p-3 rounded-full bg-primary/10">
+                                <div className="p-3 border-2 border-primary bg-primary/10">
                                     <Phone className="h-6 w-6 text-primary" />
                                 </div>
                                 <div>
@@ -155,7 +155,7 @@ export const ContactSection = () => {
                                 </div>
                             </div>
                             <div className="contact-item flex items-start space-x-4 opacity-0">
-                                <div className="p-3 rounded-full bg-primary/10">
+                                <div className="p-3 border-2 border-primary bg-primary/10">
                                     <MapPin className="h-6 w-6 text-primary" />
                                 </div>
                                 <div>
@@ -182,7 +182,7 @@ export const ContactSection = () => {
 
                     <div
                         ref={formRef}
-                        className="bg-card p-8 rounded-2xl shadow-lg border border-border/50 opacity-0"
+                        className="panel p-8 opacity-0"
                     >
                         <h3 className="text-2xl font-semibold mb-6 text-left"> Send a Message</h3>
 
@@ -201,7 +201,7 @@ export const ContactSection = () => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange("name")}
-                                    className="w-full px-4 py-3 rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                                    className="w-full px-4 py-3 rounded-none border-2 border-input bg-background focus:outline-none focus:border-primary transition-all"
                                     placeholder="Amey Bhogle"
                                 />
                                 {formErrors.name && (
@@ -222,7 +222,7 @@ export const ContactSection = () => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange("email")}
-                                    className="w-full px-4 py-3 rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                                    className="w-full px-4 py-3 rounded-none border-2 border-input bg-background focus:outline-none focus:border-primary transition-all"
                                     placeholder="example@gmail.com"
                                 />
                                 {formErrors.email && (
@@ -243,7 +243,7 @@ export const ContactSection = () => {
                                     rows={4}
                                     value={formData.message}
                                     onChange={handleChange("message")}
-                                    className="w-full px-4 py-3 rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
+                                    className="w-full px-4 py-3 rounded-none border-2 border-input bg-background focus:outline-none focus:border-primary transition-all resize-none"
                                     placeholder="Hello, I'd like to talk about..."
                                 />
                                 {formErrors.message && (
@@ -254,7 +254,7 @@ export const ContactSection = () => {
                             <button
                                 type="submit"
                                 className={cn(
-                                    "cosmic-button w-full flex items-center justify-center gap-2 py-4 text-lg"
+                                    "ink-button w-full py-4 text-lg"
                                 )}
                             >
                                 Send Message

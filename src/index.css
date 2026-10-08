@@ -1,112 +1,91 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+/* Latin subsets only — the full Zen Kaku files carry the JP glyph set (MBs) */
+@import "@fontsource/anton/latin-400.css";
+@import "@fontsource/zen-kaku-gothic-new/latin-400.css";
+@import "@fontsource/zen-kaku-gothic-new/latin-500.css";
+@import "@fontsource/zen-kaku-gothic-new/latin-700.css";
+/* Manga lettering: dialogue, shouts/SFX, and Japanese SFX (unicode-range
+   split, so only the handful of kana actually used get downloaded) */
+@import "@fontsource/comic-neue/latin-700.css";
+@import "@fontsource/bangers/latin-400.css";
+@import "@fontsource/dela-gothic-one/400.css";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --color-border: hsl(var(--border));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+/*
+ * Ink & paper: one dark theme. Warm ink-black ground, off-white "paper"
+ * linework, and a single vermilion accent used sparingly — headings and
+ * panels carry the hierarchy, not glow or gradients.
+ */
+:root {
+  --background: oklch(0.155 0.006 60);
+  --foreground: oklch(0.95 0.012 85);
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  --card: oklch(0.195 0.008 60);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
 
-  --color-card: hsl(var(--card));
+  --primary: oklch(0.66 0.21 32);
+  --primary-foreground: var(--background);
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
-  --animate-fade-in: fade-in 0.7s ease-out forwards;
-  --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
-  --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
-  --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
-  --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
-  --animate-meteor: meteor 5s linear infinite;
+  --secondary: oklch(0.25 0.008 60);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.25 0.008 60);
+  --muted-foreground: oklch(0.74 0.012 80);
+  --accent: oklch(0.25 0.008 60);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.7 0.19 22);
 
-  @keyframes float {
+  --border: oklch(0.95 0.012 85 / 14%);
+  --input: oklch(0.95 0.012 85 / 22%);
+  --ring: var(--primary);
 
-    0%,
-    100% {
-      transform: translateY(0);
-    }
+  /* Hard linework: the panel border/shadow color */
+  --ink: var(--foreground);
+  --radius: 0.25rem;
+}
 
-    50% {
-      transform: translateY(-10px);
-    }
-  }
+@theme inline {
+  --font-sans: "Zen Kaku Gothic New", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", "Impact", ui-sans-serif, sans-serif;
+  --font-heading: var(--font-display);
+  --font-letter: "Comic Neue", "Comic Sans MS", ui-rounded, sans-serif;
+  --font-sfx: "Bangers", "Impact", sans-serif;
+  --font-jp: "Dela Gothic One", "Bangers", sans-serif;
 
-  @keyframes pulse-subtle {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ink: var(--ink);
 
-    0%,
-    100% {
-      opacity: 1;
-    }
-
-    50% {
-      opacity: 0.8;
-    }
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes meteor {
-    0% {
-      transform: rotate(215deg) translateX(0);
-      opacity: 1;
-    }
-
-    70% {
-      opacity: 1;
-    }
-
-    100% {
-      transform: rotate(215deg) translateX(-500px);
-      opacity: 0;
-    }
-  }
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 @layer base {
-  :root {
-    --background: hsl(45 75% 92%);
-    --foreground: hsl(216 28% 18%);
-    --background-image: radial-gradient(circle at 15% 15%, rgba(255 255 224 / 0.52), transparent 42%),
-      radial-gradient(circle at 80% 3%, rgba(173 216 230 / 0.3), transparent 45%),
-      linear-gradient(180deg, hsl(45 98% 97%), hsl(210 74% 91%));
-
-    --card: hsl(48 80% 100%);
-
-    --primary: hsl(204 82% 44%);
-    --primary-foreground: hsl(45 98% 97%);
-
-    --border: hsl(37 56% 86%);
-  }
-
-  .dark {
-    --background: hsl(222 47% 4%);
-    --foreground: hsl(213 31% 91%);
-    --background-image: radial-gradient(circle at 10% 15%, rgba(173 216 230 / 0.2), transparent 38%),
-      linear-gradient(180deg, hsl(223 50% 12%), hsl(228 45% 8%));
-
-    --card: hsl(222 47% 8%);
-
-    --primary: hsl(250 65% 65%);
-    --primary-foreground: hsl(213 31% 91%);
-
-    --border: hsl(217 33% 20%);
-  }
-
   * {
     @apply border-border outline-ring/50;
   }
@@ -116,20 +95,32 @@
   }
 
   body {
-    @apply transition-colors duration-300 bg-background text-foreground;
-    background-image: var(--background-image);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground antialiased;
+    /* Faint screentone over the whole page — the only ambient texture */
+    background-image: radial-gradient(oklch(0.95 0.012 85 / 5%) 1px, transparent 1.2px);
+    background-size: 6px 6px;
+    font-feature-settings: "palt" 1;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display uppercase tracking-wide;
+    font-weight: 400; /* Anton ships a single weight; avoid faux bold */
+    line-height: 1.05;
+  }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
   }
 }
 
 @utility container {
   margin-inline: auto;
-  padding-inline: 2rem;
+  padding-inline: 1.25rem;
 
   @media (width >=640px) {
+    padding-inline: 2rem;
     max-width: 640px;
   }
 
@@ -144,50 +135,108 @@
   @media (width >=1280px) {
     max-width: 1280px;
   }
+}
 
-  @media (width >=1400px) {
-    max-width: 1400px;
+/* A manga panel: hard ink border, flat fill, offset ink shadow */
+@utility panel {
+  @apply relative bg-card border-2 border-ink rounded-none;
+  box-shadow: 5px 5px 0 0 var(--ink);
+}
+
+/* Hover lift for interactive panels — the shadow grows as the panel rises */
+@utility panel-hover {
+  @apply transition-[translate,box-shadow] duration-200 ease-out;
+
+  &:hover {
+    translate: -3px -3px;
+    box-shadow: 8px 8px 0 0 var(--primary);
   }
 }
 
-@utility text-glow {
-  @apply relative;
-  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+/* Primary action: stamped ink button that presses into its shadow */
+@utility ink-button {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3
+    bg-primary text-primary-foreground border-2 border-ink rounded-none
+    font-display uppercase tracking-wider
+    transition-[translate,box-shadow] duration-150 ease-out
+    disabled:opacity-60 disabled:pointer-events-none;
+  box-shadow: 4px 4px 0 0 var(--ink);
+
+  &:hover {
+    translate: -2px -2px;
+    box-shadow: 6px 6px 0 0 var(--ink);
+  }
+
+  &:active {
+    translate: 4px 4px;
+    box-shadow: 0 0 0 0 var(--ink);
+  }
 }
 
-@utility card-hover {
-  @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
+/* Secondary action: same shape, outline only */
+@utility ink-button-ghost {
+  @apply ink-button bg-transparent text-foreground;
 }
 
-@utility gradient-border {
-  @apply relative rounded-md;
-  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)));
-  background-clip: padding-box;
-  border: 1px solid transparent;
+/* Halftone dot field that fades out toward one corner — for panel backdrops */
+@utility halftone {
+  background-image: radial-gradient(var(--primary) 1.4px, transparent 1.6px);
+  background-size: 9px 9px;
+  mask-image: linear-gradient(135deg, black 0%, transparent 70%);
 }
 
-@utility cosmic-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)] hover:scale-105 active:scale-95;
+/*
+ * Paper page: everything below the hero is printed manga — ink on paper.
+ * Re-scoping the tokens means every utility (panel, ink-button, text-muted…)
+ * flips to ink-on-paper inside it without per-component changes.
+ */
+@utility paper-page {
+  --background: oklch(0.955 0.012 85);
+  --foreground: oklch(0.17 0.006 60);
+  --card: oklch(0.99 0.004 85);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.9 0.01 85);
+  --muted-foreground: oklch(0.4 0.01 60);
+  --secondary: oklch(0.9 0.01 85);
+  --secondary-foreground: var(--foreground);
+  --border: oklch(0.17 0.006 60 / 18%);
+  --input: oklch(0.17 0.006 60 / 30%);
+  --primary: oklch(0.6 0.22 32);
+  --primary-foreground: oklch(0.99 0.004 85);
+  --ink: var(--foreground);
+  --paper: var(--card);
+
+  background-color: var(--background);
+  background-image: radial-gradient(oklch(0.17 0.006 60 / 4.5%) 1px, transparent 1.2px);
+  background-size: 6px 6px;
+  color: var(--foreground);
 }
 
-@utility star {
-  @apply absolute rounded-full bg-white;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+/* A manga panel: thick ink frame, flat paper fill */
+@utility manga-panel {
+  @apply relative overflow-hidden bg-card border-[3px] border-ink;
 }
 
-@utility meteor {
-  @apply absolute bg-linear-to-r from-white via-white to-transparent rounded-full;
-  box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+/* Screentone fills — light dots on paper, paper dots on solid ink */
+@utility tone {
+  background-image: radial-gradient(var(--ink) 1.1px, transparent 1.4px);
+  background-size: 5px 5px;
 }
 
-@utility light-sparkle {
-  @apply absolute rounded-full bg-[rgba(255,221,140,0.85)]
-    backdrop-blur-sm;
-  box-shadow:
-    0 0 16px 5px rgba(255, 230, 182, 0.55),
-    0 0 24px 12px rgba(255, 206, 108, 0.25),
-    inset 0 0 10px 2px rgba(255, 245, 200, 0.6);
-  filter: saturate(1.14) brightness(1.1);
+@utility tone-dark {
+  background-color: var(--ink);
+  background-image: radial-gradient(oklch(0.99 0.004 85 / 22%) 1.1px, transparent 1.4px);
+  background-size: 5px 5px;
+}
+
+/*
+ * Ink outline that hugs any silhouette, including clip-path shapes.
+ * A bubble body and its tail merge into one outline this way, with no
+ * seam where they overlap — which a CSS border can't do.
+ */
+@utility ink-outline {
+  filter: drop-shadow(2.5px 0 0 var(--ink)) drop-shadow(-2.5px 0 0 var(--ink))
+    drop-shadow(0 2.5px 0 var(--ink)) drop-shadow(0 -2.5px 0 var(--ink));
 }
 
 #root {
@@ -195,185 +244,4 @@
   margin: 0 auto;
   padding: 0;
   text-align: center;
-}
-
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 254, 254, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
-
-@theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', sans-serif;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }

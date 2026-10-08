@@ -129,8 +129,8 @@ const ProjectThumb = ({ project, className }) => {
         .toUpperCase();
 
     return (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/25 via-purple-500/20 to-background">
-            <span className="text-4xl font-bold tracking-tight text-primary/70">
+        <div className="w-full h-full flex items-center justify-center bg-secondary">
+            <span className="text-5xl font-display text-primary/80">
                 {initials}
             </span>
         </div>
@@ -207,7 +207,7 @@ export const ProjectsSection = () => {
                         <div
                             key={project.id}
                             onClick={() => handleProjectClick(project)}
-                            className="project-card group bg-card rounded-lg overflow-hidden shadow-xs border border-border/50 hover:border-primary/50 transition-colors duration-300 card-hover cursor-pointer"
+                            className="project-card group panel panel-hover overflow-hidden cursor-pointer"
                         >
                             <div className="h-48 overflow-hidden relative">
                                 <ProjectThumb
@@ -216,7 +216,7 @@ export const ProjectsSection = () => {
                                 />
                                 {project.liveUrl && (
                                     <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium bg-background/80 backdrop-blur-sm border border-primary/40 text-primary">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                                         Live
                                     </span>
                                 )}
@@ -226,7 +226,7 @@ export const ProjectsSection = () => {
                             <div className="p-6">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {project.tags.slice(0, 3).map((tag, i) => (
-                                        <span key={i} className="px-2 py-1 text-[10px] font-medium border rounded-full bg-secondary/50 text-secondary-foreground">
+                                        <span key={i} className="px-2 py-1 text-[10px] font-medium border border-border bg-secondary/50 text-secondary-foreground">
                                             {tag}
                                         </span>
                                     ))}
@@ -243,7 +243,7 @@ export const ProjectsSection = () => {
 
                 <div className="text-center mt-12">
                     <a
-                        className="cosmic-button w-fit flex items-center mx-auto gap-2"
+                        className="ink-button w-fit mx-auto"
                         target="_blank"
                         href="https://github.com/ameybhogle12?tab=repositories"
                     >
@@ -263,7 +263,7 @@ export const ProjectsSection = () => {
                     
                     <div
                         ref={modalRef}
-                        className="relative w-full max-w-3xl bg-card rounded-2xl shadow-2xl border border-border/50 overflow-hidden"
+                        className="relative w-full max-w-3xl panel overflow-hidden"
                         style={{ opacity: 0 }}
                         onClick={e => e.stopPropagation()}
                     >
@@ -284,7 +284,7 @@ export const ProjectsSection = () => {
                             <div className="p-8">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {selectedProject.tags.map((tag, i) => (
-                                        <span key={i} className="px-3 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
+                                        <span key={i} className="px-3 py-1 text-xs font-medium border border-border bg-secondary text-secondary-foreground">
                                             {tag}
                                         </span>
                                     ))}
@@ -300,7 +300,7 @@ export const ProjectsSection = () => {
                                             href={selectedProject.liveUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex-1 cosmic-button flex items-center justify-center gap-2 text-sm"
+                                            className="flex-1 ink-button text-sm"
                                         >
                                             {selectedProject.liveLabel ?? "View Live"}
                                             <ExternalLink size={16} />
@@ -315,19 +315,19 @@ export const ProjectsSection = () => {
                                             className={cn(
                                                 "flex-1 flex items-center justify-center gap-2 text-sm",
                                                 selectedProject.liveUrl
-                                                    ? "px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
-                                                    : "cosmic-button"
+                                                    ? "ink-button-ghost"
+                                                    : "ink-button"
                                             )}
                                         >
                                             View on GitHub <Github size={16} />
                                         </a>
                                     ) : selectedProject.repoPrivate ? (
-                                        <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-2 rounded-full border border-border text-muted-foreground select-none">
+                                        <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-3 border-2 border-border text-muted-foreground select-none">
                                             Private Project <Lock size={16} />
                                         </span>
                                     ) : (
                                         !selectedProject.liveUrl && (
-                                            <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-2 rounded-full border border-border text-muted-foreground cursor-not-allowed select-none">
+                                            <span className="flex-1 flex items-center justify-center gap-2 text-sm px-6 py-3 border-2 border-border text-muted-foreground cursor-not-allowed select-none">
                                                 Repo Coming Soon <Github size={16} />
                                             </span>
                                         )

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Original artwork sources (kept locally; the site ships the WebP exports in public/)
+design/
