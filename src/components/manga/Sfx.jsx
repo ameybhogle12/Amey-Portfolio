@@ -25,15 +25,28 @@ export const Sfx = ({ children, jp = false, tone = "ink", rotate = -8, className
     );
 };
 
-/** Focus lines (集中線) filling their positioned parent. */
-export const FocusLines = ({ seed, cx, cy, clear, className, color = "var(--ink)" }) => (
+/**
+ * Focus lines (集中線) filling their positioned parent. `frames` > 1 renders
+ * extra variants of the burst (hidden, tagged data-frame) that a hover can
+ * flip between to make the lines crackle.
+ */
+export const FocusLines = ({ seed, cx, cy, clear, frames = 1, className, color = "var(--ink)" }) => (
     <svg
+        data-lines
         aria-hidden="true"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
         className={cn("absolute inset-0 w-full h-full pointer-events-none", className)}
     >
-        <path d={focusLines(seed, 110, cx, cy, clear)} fill={color} />
+        {Array.from({ length: frames }, (_, i) => (
+            <path
+                key={i}
+                data-frame
+                d={focusLines(seed + i * 101, 110, cx, cy, clear - (i % 2) * 4)}
+                fill={color}
+                opacity={i === 0 ? 1 : 0}
+            />
+        ))}
     </svg>
 );
 
