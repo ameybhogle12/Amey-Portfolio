@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 export const Home = () => {
     return (
-        <div className="min-h-screen overflow-x-hidden">
+        <div className="min-h-screen overflow-x-clip">
             <Toaster />
 
             <Navbar/>

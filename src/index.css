@@ -204,11 +204,35 @@
   --primary: oklch(0.6 0.22 32);
   --primary-foreground: oklch(0.99 0.004 85);
   --ink: var(--foreground);
-  --paper: var(--card);
+  /* Kept un-overridden by ink-page, so a domain can tear back to paper */
+  --paper-ground: oklch(0.955 0.012 85);
 
   background-color: var(--background);
   background-image: radial-gradient(oklch(0.17 0.006 60 / 4.5%) 1px, transparent 1.2px);
   background-size: 6px 6px;
+  color: var(--foreground);
+}
+
+/*
+ * Ink page: back to the hero's night palette inside a paper page — used by
+ * the Projects domain. Mirrors the :root tokens so every utility flips back.
+ */
+@utility ink-page {
+  --background: oklch(0.155 0.006 60);
+  --foreground: oklch(0.95 0.012 85);
+  --card: oklch(0.195 0.008 60);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.25 0.008 60);
+  --muted-foreground: oklch(0.74 0.012 80);
+  --secondary: oklch(0.25 0.008 60);
+  --secondary-foreground: var(--foreground);
+  --border: oklch(0.95 0.012 85 / 14%);
+  --input: oklch(0.95 0.012 85 / 22%);
+  --primary: oklch(0.66 0.21 32);
+  --primary-foreground: oklch(0.155 0.006 60);
+  --ink: var(--foreground);
+
+  background-color: var(--background);
   color: var(--foreground);
 }
 
