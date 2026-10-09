@@ -399,15 +399,30 @@ export const ProjectsSection = () => {
 
         // idle → armed → playing → done. The domain arms whenever the stage
         // sits below the trigger line, and plays the moment it crosses it on
-        // the way down — even if a fast fling jumps straight past, it snaps
-        // back to the stage first. Scrolling back up until the stage is fully
-        // off-screen re-arms it, so coming down again replays it. Landing
-        // below it with nothing armed (a reload mid-page) shows it finished.
+        // the way down. Scrolling back up until the stage is fully off-screen
+        // re-arms it, so coming down again replays it. Landing below it with
+        // nothing armed (a reload mid-page) shows it finished.
         state = "idle";
         const arm = () => {
             if (state === "armed") return;
             state = "armed";
             tl.seek(0);
+        };
+        // A nav link to another section scrolls straight through: the domain
+        // shows finished instead of hijacking the trip. Only #projects plays.
+        let passThroughUntil = 0;
+        const onAnyNavClick = (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            passThroughUntil = link.getAttribute("href") === "#projects" ? 0 : performance.now() + 3000;
+        };
+        const onScrollEnd = () => {
+            passThroughUntil = 0;
+        };
+
+        const finish = () => {
+            state = "done";
+            tl.seek(tl.duration);
         };
         const check = () => {
             if (state === "playing") return;
@@ -418,20 +433,29 @@ export const ProjectsSection = () => {
             } else if (top > vh * 0.15) {
                 if (state === "idle") arm();
             } else if (state === "armed") {
+                // Play only when the stage is actually on screen. A jump that
+                // lands far past it (End key, a nav link) shows it finished.
+                if (top < -vh * 0.5 || performance.now() < passThroughUntil) {
+                    finish();
+                    return;
+                }
                 state = "playing";
                 window.scrollTo({ top: window.scrollY + top, behavior: "instant" });
                 lock();
                 tl.restart();
             } else if (state === "idle") {
-                state = "done";
-                tl.seek(tl.duration);
+                finish();
             }
         };
         window.addEventListener("scroll", check, { passive: true });
+        window.addEventListener("scrollend", onScrollEnd);
+        document.addEventListener("click", onAnyNavClick, true);
         check();
 
         return () => {
             window.removeEventListener("scroll", check);
+            window.removeEventListener("scrollend", onScrollEnd);
+            document.removeEventListener("click", onAnyNavClick, true);
             skipBtn.removeEventListener("click", skip);
             unlock();
         };
