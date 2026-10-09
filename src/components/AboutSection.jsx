@@ -162,9 +162,9 @@ export const AboutSection = () => {
                 <span aria-hidden="true" className="font-jp text-5xl md:text-6xl text-primary leading-none">壱</span>
             </header>
 
-            <div data-page className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-6 gap-3 md:gap-4">
+            <div data-page className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4">
                 {/* P1 — establishing shot */}
-                <div data-panel className="manga-panel md:col-span-6 aspect-[16/9] md:aspect-[21/8] bg-ink">
+                <div data-panel className="manga-panel col-span-2 md:col-span-6 aspect-[16/9] md:aspect-[21/8] bg-ink">
                     <img
                         src="/about/desk.webp"
                         alt="Late at night in Mumbai, Amey studies code on a monitor beside a window full of city lights"
@@ -179,8 +179,8 @@ export const AboutSection = () => {
                     </Sfx>
                 </div>
 
-                {/* P2 — push in on the same 2:47 AM moment */}
-                <div data-panel className="manga-panel md:col-span-4 h-72 md:h-80 bg-ink">
+                {/* P2 — push in on the same 2:47 AM moment (P2 + P3 share a row on phones) */}
+                <div data-panel className="manga-panel md:col-span-4 h-64 md:h-80 bg-ink">
                     <img
                         src="/about/desk-face.webp"
                         alt="Close on Amey's face, lit by the monitor, hand at his chin"
@@ -189,13 +189,17 @@ export const AboutSection = () => {
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover object-[45%_50%]"
                     />
-                    <Bubble tail="bottom-left" className="absolute top-4 right-3 md:right-5 max-w-[15rem]">
-                        Hmmmm, most people run from a hard problem.
+                    <Bubble
+                        variant="thought"
+                        className="absolute top-3 right-2 md:top-4 md:right-5 max-w-[90%] md:max-w-[15rem]"
+                        textClassName="px-4 py-2.5 text-xs sm:text-sm md:px-8 md:py-5 md:text-lg"
+                    >
+                        Hour three.<br />Same bug.
                     </Bubble>
                 </div>
 
                 {/* P3 — reverse angle: mirrored and tighter */}
-                <div data-panel className="manga-panel md:col-span-2 h-72 md:h-80 bg-ink">
+                <div data-panel className="manga-panel md:col-span-2 h-64 md:h-80 bg-ink">
                     <img
                         src="/about/desk-face-tight.webp"
                         alt=""
@@ -205,13 +209,17 @@ export const AboutSection = () => {
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover object-[60%_50%]"
                     />
-                    <Bubble tail="bottom-right" className="absolute top-4 left-3 max-w-[12rem]">
-                        Me? I live for the strain.
+                    <Bubble
+                        tail="bottom-right"
+                        className="absolute top-3 left-2 md:top-4 md:left-3"
+                        textClassName="px-4 py-2.5 text-sm sm:text-base md:px-7 md:py-4 md:text-xl"
+                    >
+                        ...Found you.
                     </Bubble>
                 </div>
 
                 {/* P4 — the panic of 2022 */}
-                <div data-panel className="manga-panel tone-dark md:col-span-3 h-72">
+                <div data-panel className="manga-panel tone-dark col-span-2 md:col-span-3 h-72">
                     <Bubble variant="caption" className="absolute top-4 left-4 z-10">2022.</Bubble>
                     <Bubble variant="shout" seed={11} textClassName="px-10 py-8 text-lg md:text-xl" className="absolute top-[13%] left-[10%] -rotate-3">
                         AI will replace devs!
@@ -227,7 +235,7 @@ export const AboutSection = () => {
                 </div>
 
                 {/* P5 — the turn: sunglasses come down, eyes only */}
-                <div data-panel className="manga-panel md:col-span-3 aspect-[7/4] md:aspect-auto md:h-72 bg-ink">
+                <div data-panel className="manga-panel col-span-2 md:col-span-3 aspect-[7/4] md:aspect-auto md:h-72 bg-ink">
                     <img
                         src="/about/eyes.webp"
                         alt="Extreme close-up: Amey lowers his sunglasses, eyes locked on the viewer"
@@ -248,7 +256,7 @@ export const AboutSection = () => {
                 <div
                     data-panel="splash"
                     title="Summon again"
-                    className="relative md:col-span-3 md:row-span-3 aspect-[2/3] border-[3px] border-ink bg-card cursor-pointer"
+                    className="relative col-span-2 md:col-span-3 md:row-span-3 aspect-[2/3] border-[3px] border-ink bg-card cursor-pointer"
                 >
                     <div className="absolute inset-0 overflow-hidden">
                         <img
@@ -310,7 +318,7 @@ export const AboutSection = () => {
 
                 {/* P7 — what he built */}
                 {builds.map((b, i) => (
-                    <div key={b.title} data-panel className="manga-panel md:col-span-3 p-5 pt-6 text-left flex flex-col justify-center">
+                    <div key={b.title} data-panel className="manga-panel col-span-2 md:col-span-3 p-5 pt-6 text-left flex flex-col justify-center">
                         {i === 0 && (
                             <Bubble variant="caption" dark className="absolute top-0 left-0 border-0">
                                 And then, he built.
@@ -325,7 +333,7 @@ export const AboutSection = () => {
                 ))}
 
                 {/* P8 — character profile, databook style */}
-                <div data-panel className="manga-panel md:col-span-4 text-left">
+                <div data-panel className="manga-panel col-span-2 md:col-span-4 text-left">
                     <div className="bg-ink text-card px-4 py-2 flex items-center justify-between">
                         <span className="font-display uppercase tracking-wider text-lg">Character Profile</span>
                         <span className="font-jp text-sm opacity-80">キャラ紹介</span>
@@ -365,7 +373,7 @@ export const AboutSection = () => {
                 </div>
 
                 {/* P9 — the challenge */}
-                <div data-panel className="manga-panel md:col-span-2 min-h-80 flex flex-col items-center justify-center gap-5 p-5">
+                <div data-panel className="manga-panel col-span-2 md:col-span-2 min-h-80 flex flex-col items-center justify-center gap-5 p-5">
                     <FocusLines seed={9} cx={50} cy={40} clear={30} className="opacity-90" />
                     <Bubble variant="shout" seed={77} textClassName="px-12 py-11 text-4xl md:text-5xl">
                         Try me.
